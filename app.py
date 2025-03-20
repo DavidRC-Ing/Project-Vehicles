@@ -5,8 +5,19 @@ import streamlit as st
 # Cargar datos con ruta relativa
 car_data = pd.read_csv("vehicles_us.csv")
 
+
 # Título de la aplicación
 st.title('Análisis de Datos de Anuncios de Venta de Vehículos')
+st.markdown("""
+### 🛠️ Detalles del Proyecto
+En este proyecto se realizara un analisis preliminar de datos del conjunto `vehicles_us` este dataframe incluye datos sobre kilometraje, precio, modelo, etc.
+- **Datos:** Vehículos en venta en EE.UU.
+- **Objetivo:** Analizar la relación entre odómetro y precio.
+- 🔍 *Usamos gráficos interactivos con Plotly.*
+""")
+
+st.header("Exploración de datos")
+st.dataframe(car_data)
 
 # Botones para mostrar/ocultar gráficos
 show_hist = st.checkbox(" Mostrar Histograma", value=True)
