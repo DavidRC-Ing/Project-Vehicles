@@ -2,32 +2,35 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+# Cargar datos con ruta relativa
+car_data = pd.read_csv("vehicles_us.csv")
 
-car_data = pd.read_csv(
-    "/Users/ASUS/Documents/Tripleten/Proyecto spring 7/Project-Vehicles/vehicles_us.csv")
+# Título de la aplicación
+st.title('Análisis de Datos de Anuncios de Venta de Vehículos')
 
-st.header('Data Vehicles')
+# Botones para mostrar/ocultar gráficos
+show_hist = st.checkbox(" Mostrar Histograma", value=True)
+show_scatter = st.checkbox("Mostrar Gráfico de Dispersión", value=True)
 
-hist_button = st.button('Construir histograma')
-if hist_button:  # al hacer clic en el botón
-    # escribir un mensaje
-    st.write(
-        'Creación de un histograma para el conjunto de datos de anuncios de venta de coches')
+# Histograma
+if show_hist:
+    with st.expander(" Histograma de Odómetro"):
+        st.write("Distribución de kilometraje en los anuncios de venta de coches")
+        fig_hist = px.histogram(
+            car_data, x="odometer",
+            color_discrete_sequence=["#FF5733"],  # Color personalizado
+            title="Distribución del Odómetro en Vehículos"
+        )
+        st.plotly_chart(fig_hist, use_container_width=True)
 
-    # crear un histograma
-    fig = px.histogram(car_data, x="odometer")
-
-    # mostrar un gráfico Plotly interactivo
-    st.plotly_chart(fig, use_container_width=True)
-
-scatter_button = st.button('Construir gráfico de dispersión')
-if scatter_button:  # al hacer clic en el botón
-    # escribir un mensaje
-    st.write(
-        'Creación de gráfico de dispersión para el conjunto de datos de anuncios de venta de coches')
-
-    # crear un gráfico de dispersión
-    fig = px.scatter(car_data, x="odometer", y="price")
-
-    # mostrar un gráfico Plotly interactivo
-    st.plotly_chart(fig, use_container_width=True)
+# Gráfico de dispersión
+if show_scatter:
+    with st.expander(" Gráfico de Dispersión Precio vs. Odómetro"):
+        st.write("Relación entre kilometraje y precio de los vehículos")
+        fig_scatter = px.scatter(
+            car_data, x="odometer", y="price",
+            color="price",  # Colorear por precio
+            color_continuous_scale="Viridis",  # Paleta de colores
+            title="Relación entre Odómetro y Precio"
+        )
+        st.plotly_chart(fig_scatter, use_container_width=True)
